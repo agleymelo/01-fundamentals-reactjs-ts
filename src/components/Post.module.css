@@ -67,7 +67,6 @@
   font-size: 0.875rem;
   color: var(--gray-400);
   line-height: 1.6;
-
 }
 
 .commentForm {
@@ -120,4 +119,8 @@
 
 .commentForm button[type=submit]:hover {
   background: var(--green-300);
+}
+
+.commentList { 
+  margin-top: 2rem;
 }
