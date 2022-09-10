@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { ChangeEvent, FormEvent, InvalidEvent, useState } from "react"
 import { format, formatDistanceToNow } from "date-fns"
 import ptBR from "date-fns/locale/pt-BR"
 import { Comment } from "./Comment"
@@ -6,7 +6,24 @@ import { Avatar } from "./Avatar"
 
 import styles from "./Post.module.css"
 
-export function Post({ author, content, published_at }) {
+type Author = {
+  name: string
+  avatar_url: string
+  role: string
+}
+
+type Content = {
+  type: "paragraph" | "link"
+  content: string
+}
+
+type PostProps = {
+  author: Author
+  content: Content[]
+  published_at: Date
+}
+
+export function Post({ author, content, published_at }: PostProps) {
   const [comments, setComments] = useState(["Post muito bacana, hein!?"])
   const [newCommentText, setNewCommentText] = useState("")
 
@@ -23,23 +40,23 @@ export function Post({ author, content, published_at }) {
     addSuffix: true,
   })
 
-  function handleCreateNewComment() {
+  function handleCreateNewComment(event: FormEvent) {
     event.preventDefault()
 
     setComments([...comments, newCommentText])
     setNewCommentText("")
   }
 
-  function handleNewCommentChange() {
+  function handleNewCommentChange(event: ChangeEvent<HTMLTextAreaElement>) {
     event.target.setCustomValidity("")
     setNewCommentText(event.target.value)
   }
 
-  function handleNewCommentInvalid() {
+  function handleNewCommentInvalid(event: InvalidEvent<HTMLTextAreaElement>) {
     event.target.setCustomValidity("Esse campo e obrigatório!")
   }
 
-  function deleteComment(commentToDelete) {
+  function deleteComment(commentToDelete: string) {
     // imutabilidade -> as variáveis nao sofrem mutação, nos criamos um novo valor (um novo espaço na memoria)
 
     const commentWithoutDeleteOne = comments.filter((comment) => {
